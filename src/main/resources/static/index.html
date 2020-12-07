@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <table style="border:1px solid black">
+        <tr v-for="(row, idx1) in rows" :key="idx1">
+            <td v-for="(col, idx2) in row" :key="idx2"
+                :class="{'miner_cell_covered':col.isCellCovered,
+                'miner_cell_uncovered':col.isCellUncovered,
+                'miner_cell_marked':col.isCellMarked}"
+                @contextmenu.prevent="rightClickCell(idx1, idx2)"
+                @click="uncoverCell(idx1, idx2)">{{col.showed}}
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<script src="js/main.js"></script>
+</html>
