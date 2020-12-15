@@ -5,21 +5,40 @@ var app = new Vue({
         cols: [],
         isCellCovered: true,
         isCellUncovered: false,
-        displayText: ''
+        displayText: '',
+        firstClick: false
     },
     methods: {
-        uncoverCell(idx1, idx2) {
-            this.rows[idx1][idx2].isCellCovered = false
-            this.rows[idx1][idx2].isCellUncovered = true
-            this.rows[idx1][idx2].isCellMarked = false
-            if (this.rows[idx1][idx2].value == '9') {
-                this.rows[idx1][idx2].showed = '💥';
-            }
-            else if (this.rows[idx1][idx2].value == '0') {
-                this.rows[idx1][idx2].showed = '';
+            uncoverCell(idx1, idx2) {
+                if (!this.firstClick){
+                    axios.get('http://localhost:8080/board/create?x='+idx1+'&y='+idx2)
+                                    .then(response => (
+                                        this.rows = response.data.map(row => (
+                                            this.cols = row.map (col => (
+                                               { showed:'', value: col, isCellCovered: true, ...col }
+                                            ))
+                                        )),
+                                    this.firstClick = true,
+                                    this.rows[idx1][idx2].isCellCovered = false,
+                                    this.rows[idx1][idx2].isCellUncovered = true,
+                                    this.rows[idx1][idx2].isCellMarked = false,
+                                    this.rows[idx1][idx2].showed = ''
+                                    )
+                    )
             }
             else {
-                this.rows[idx1][idx2].showed = this.rows[idx1][idx2].value;
+                this.rows[idx1][idx2].isCellCovered = false
+                this.rows[idx1][idx2].isCellUncovered = true
+                this.rows[idx1][idx2].isCellMarked = false
+                if (this.rows[idx1][idx2].value == '9') {
+                    this.rows[idx1][idx2].showed = '💥';
+                }
+                else if (this.rows[idx1][idx2].value == '0') {
+                    this.rows[idx1][idx2].showed = '';
+                }
+                else {
+                    this.rows[idx1][idx2].showed = this.rows[idx1][idx2].value;
+                }
             }
         },
         rightClickCell(idx1, idx2) {
@@ -36,7 +55,7 @@ var app = new Vue({
         }
     },
     mounted() {
-        axios.get('http://localhost:8080/board/create')
+        axios.get('http://localhost:8080/board/clear')
             .then(response => (
                 this.rows = response.data.map(row => (
                     this.cols = row.map (col => (

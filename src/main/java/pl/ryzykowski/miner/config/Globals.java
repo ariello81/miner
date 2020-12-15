@@ -11,4 +11,6 @@ public class Globals {
 
     public static final int BOMB_VALUE = 9;
 
+    public static final int FIRST_CELL_VALUE = -1;
+
 }
