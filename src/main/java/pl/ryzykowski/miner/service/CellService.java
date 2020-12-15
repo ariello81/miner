@@ -20,6 +20,18 @@ public class CellService {
         return bombsCounter;
     }
 
+    public int checkSelfAndAdjacentCells(int row, int col, Board board, int value){
+        int bombsCounter = 0;
+        for (int x=row-1; x<=row+1; x++) {
+            for (int y=col-1; y<=col+1; y++) {
+                if (checkValueInCell(x, y, board, value)){
+                    bombsCounter++;
+                }
+            }
+        }
+        return bombsCounter;
+    }
+
     private boolean checkValueInCell(int x, int y, Board board, int value){
         if (x>=0 && y>=0 && x<Globals.BOARD_DIMENSION && y<Globals.BOARD_DIMENSION && board.getGameBoard()[x][y]== value){
             return true;

@@ -6,7 +6,9 @@ var app = new Vue({
         isCellCovered: true,
         isCellUncovered: false,
         displayText: '',
-        firstClick: false
+        firstClick: false,
+        i:0,
+        j:0
     },
     methods: {
             uncoverCell(idx1, idx2) {
@@ -14,15 +16,16 @@ var app = new Vue({
                     axios.get('http://localhost:8080/board/create?x='+idx1+'&y='+idx2)
                                     .then(response => (
                                         this.rows = response.data.map(row => (
-                                            this.cols = row.map (col => (
-                                               { showed:'', value: col, isCellCovered: true, ...col }
+                                            this.cols = row.map (col => ( col==0 ?
+                                               { showed:'', value: col, isCellCovered:false, isCellUncovered: true, ...col }
+                                               :
+                                               { showed:'', value: col, isCellCovered:true, isCellUncovered: false, ...col }
                                             ))
                                         )),
-                                    this.firstClick = true,
-                                    this.rows[idx1][idx2].isCellCovered = false,
-                                    this.rows[idx1][idx2].isCellUncovered = true,
-                                    this.rows[idx1][idx2].isCellMarked = false,
-                                    this.rows[idx1][idx2].showed = ''
+                                        this.rows[idx1][idx2].isCellCovered = false,
+                                        this.rows[idx1][idx2].isCellUncovered = true,
+                                        this.rows[idx1][idx2].isCellMarked = false,
+                                        this.firstClick = true
                                     )
                     )
             }

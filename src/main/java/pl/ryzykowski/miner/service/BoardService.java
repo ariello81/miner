@@ -31,13 +31,14 @@ public class BoardService {
     }
 
     private Board fillBoardWithBombs(Board board, int x, int y){
+        System.out.println("X:" + x + " " + "Y:" + y);
         board.getGameBoard()[x][y] = Globals.FIRST_CELL_VALUE;
         int bombNo = 0;
         do {
             int randomX = ThreadLocalRandom.current().nextInt(0, Globals.BOARD_DIMENSION);
             int randomY = ThreadLocalRandom.current().nextInt(0, Globals.BOARD_DIMENSION);
             if ((board.getGameBoard()[randomX][randomY] != Globals.BOMB_VALUE)
-                && cellService.checkAdjacentCells(randomX, randomY, board, Globals.FIRST_CELL_VALUE)==0) {
+                && cellService.checkSelfAndAdjacentCells(randomX, randomY, board, Globals.FIRST_CELL_VALUE)==0) {
                     board.getGameBoard()[randomX][randomY] = Globals.BOMB_VALUE;
                     bombNo++;
                     System.out.println("x:" + randomX + " " + "y:" + randomY);
